@@ -47,5 +47,21 @@ Before touching PHP code, a database should be set-up through phpMyAdmin along w
 
 Now the database is setup, waiting for information to add to the table from the application.
 
+### Connect to the Database
+
+A best practice when including PHP that won't be included in the website is to create another folder for those PHP files.  For this application I created a config folder and will put any PHP files that won't be displayed on the website in this folder.
+
+One such file is the PHP file that connects to the database named **dbh.config.php**.  Another best practice for pure PHP files is to only include the opening ```<?php``` tag and not closing it.  The reasons for doing so can be found at this [stack overflow](https://stackoverflow.com/questions/4410704/why-would-one-omit-the-close-tag) link.
+
+This project is using the [MySQL Improved Extension](http://php.net/manual/en/book.mysqli.php) (mysqli) to interact with the database.  (Another popular way to interact with databases in PHP is using [PHP Data Objects](http://php.net/manual/en/intro.pdo.php), which I experimented with in [another project](https://github.com/xmtrinidad/Flashcard-PHP)).
+
+[Connecting](http://php.net/manual/en/mysqli.quickstart.connections.php) to the database requires four things to get started:
+    1.  Server Name
+    2.  Database user name
+    3.  Database password
+    4.  Database name
+
+
+
 
 
