@@ -2,7 +2,7 @@
 
     <section class="container">
         <h2 class="center-align">Signup</h2>
-        <form class="signup-form" action="signup.config.php" method="POST">
+        <form class="signup-form" action="config/signup.config.php" method="POST">
             <div class="row">
                 <div class="input-field col m6 s12">
                     <input name="first" id="first_name" type="text" class="validate">

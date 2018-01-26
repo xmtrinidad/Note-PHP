@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,14 +19,18 @@
             <div class="nav-wrapper">
                 <a href="index.php" class="brand-logo left">PHP Note</a>
                 <ul id="nav-mobile" class="right">
-                <li><a href="#login-modal" class="modal-trigger"><i class="material-icons left">account_circle</i>Log In</a></li>
+                <?php if (isset($_SESSION['u_id'])): ?>
+                    <li><a href="#logout-modal" class="modal-trigger"><i class="material-icons left">exit_to_app</i>Log Out</a></li>
+                <?php else: ?>
+                    <li><a href="#login-modal" class="modal-trigger"><i class="material-icons left">account_circle</i>Log In</a></li>
+                <?php endif; ?>
                 </ul>
             </div>
         </nav>
         <!-- Login Modal -->
         <div id="login-modal" class="modal">
             <h4 class="modal__title">Login</h4>
-            <form>
+            <form action="config/login.config.php" method="POST">
                 <div class="modal-content">
                     <div class="input-field">
                         <input name="uid" id="username" type="text" class="validate">
@@ -34,8 +42,20 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat">Login</button>
+                    <button type="submit" name="submit" class="modal-action modal-close waves-effect waves-green btn-flat">Login</button>
                     <a href="signup.php" class="modal-action modal-close waves-effect waves-green btn-flat">Sign Up</a>
+                </div>
+            </form>
+        </div>
+        <!-- Logout Modal -->
+        <div id="logout-modal" class="modal">
+            <form action="config/logout.config.php" method="POST">
+                <div class="modal-content">
+                    <p>Are you sure you want to logout?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="submit" class="modal-action modal-close waves-effect waves-green btn-flat">Logout</button>
+                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
                 </div>
             </form>
         </div>
