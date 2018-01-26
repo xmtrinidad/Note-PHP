@@ -23,6 +23,12 @@ Any new resources I find while developing this application I will post in this s
 
 The sections below document how the login system for this application was created.  As I mentioned before, I am following along with a tutorial, adjusting it to fit my own application as I go along.
 
+**Table of Contents**       
+[Create a Database](#create-a-database)     
+[Connect to the Database](#connect-to-the-database)     
+[Signup Form](#signup-form)     
+[Signup Script](#signup-script)     
+
 ### Create a Database
 
 Before touching PHP code, a database should be set-up through phpMyAdmin along with a table in that database that will hold the login information:
@@ -56,10 +62,116 @@ One such file is the PHP file that connects to the database named **dbh.config.p
 This project is using the [MySQL Improved Extension](http://php.net/manual/en/book.mysqli.php) (mysqli) to interact with the database.  (Another popular way to interact with databases in PHP is using [PHP Data Objects](http://php.net/manual/en/intro.pdo.php), which I experimented with in [another project](https://github.com/xmtrinidad/Flashcard-PHP)).
 
 [Connecting](http://php.net/manual/en/mysqli.quickstart.connections.php) to the database requires four things to get started:
-    1.  Server Name
-    2.  Database user name
-    3.  Database password
-    4.  Database name
+1.  Server Name
+2.  Database user name
+3.  Database password
+4.  Database name
+
+When developing locally (and for this application) these are typically defined like so:
+```php
+$dbServername = "localhost"; // When deploying live change this to the name of the host server
+$dbUsername = "root";
+$dbPassword = ""; // By default, there is no password but for this application my db has a password
+$dbName = "noteapp"; // this is just the name of the db that was setup earlier
+```
+
+These four variables can then be used to make a mysqli instance/connection:
+```php
+$mysqli = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
+```
+
+### Signup Form
+
+When clicking on the *log in* button on index.php, a modal opens up to sign in and there is a signup button as well.  Clicking on the signup button redirects to the **signup.php** page where there is a sign up form.  Here's a snippet of the important parts:
+```html
+<form action="config/signup.config.php" method="POST">
+    <div class="row">
+        <div class="input-field col m6 s12">
+            <input name="first" id="first_name" type="text" class="validate">
+            <label for="first_name">First Name</label>
+        </div>
+        <!-- ...more input fields... -->
+
+        <!-- submit button -->
+        <div class="center-align">
+            <button class="btn waves-effect waves-light" type="submit" name="submit">Sign Up
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+</form>
+```
+
+The first thing to note is the **action** attribute on the form tag.  When submitting the form information, it goes to wherever the action points to.  In this case, there is another file named *signup.config.php* inside the config folder.  This file contains the PHP code that manipulates the data (more information about this file can be found in the next section).
+
+The next important attribute of the form is the **method** attribute.  This attribute can be set to POST or GET.  For a more in depth explanation of the difference between the two, check out this [stack overflow](https://stackoverflow.com/questions/3477333/what-is-the-difference-between-post-and-get) page.
+
+For a signup form like this, POST should be used instead of GET so that sensative information (such as passwords) are not displayed in the URL when submitting the form.
+
+The most important part of the form inputs and submit button is ensuring a name attribute is set.  The input field name and button are set to "first" and "submit".  When submitting the form, the name set by the name attribute is how the information will be accessed from the **signup.config.php** file.
+
+### Signup Script
+
+As mentioned in the section before, the **signup.config.php** file is where the PHP code exist that will interact with the data submitted from the signup form.
+
+The first thing to check for is that the signup for was submitted.  Without this check, a user could access the signup.config.php file by simply placing the file name inside the URL.  Since this file isn't meant to be seen or interacted with by a user, it's important to make sure the form was submitted.  This can be done by using the [isset()](http://php.net/manual/en/function.isset.php) function:
+```php
+if (isset($_POST['submit'])) {
+
+} else {
+    header("Location: ../signup.php");
+    exit();
+}
+```
+Passing ```$_POST['submit']``` to the isset() function checks if it results in NULL.  If the file is accessed from the URL, $_POST['submit'] would result in NULL (since it wasn't posted from the signup form) and would immediately go to the else clause, which sends the user back to the signup page and exits the script.
+
+If isset() is not null, that means the information from the signup form was posted and the script will continue to process the information:
+```php
+include_once('dbh.config.php');
+
+$first = mysqli_real_escape_string($mysqli, $_POST['first']);
+$last = mysqli_real_escape_string($mysqli, $_POST['last']);
+$email = mysqli_real_escape_string($mysqli, $_POST['email']);
+$uid = mysqli_real_escape_string($mysqli, $_POST['uid']);
+$pwd = mysqli_real_escape_string($mysqli, $_POST['pwd']);
+```
+To interact with the database, the config file [created earlier](#connect-to-the-database) needs to be included in the script.
+
+All the $_POST information is passed into their own variables, which are all set to the [mysqli_real_escape_string](http://php.net/manual/en/mysqli.real-escape-string.php) function.  This function takes in the connection to the database (```$mysqli```) and the value from the $_POST.  Using the mysqli_real_escape_string is necessary to prevent SQL Injection.  Essentially, if a user attempts to pass in SQL commands into the input, they will be escaped and NOT interpreted as valid SQL commands, but instead as just regular text.
+
+The next step is error handling, starting with checking for empty fields:
+```php
+//Check for empty fields
+if (empty($first) || empty($last) || empty($email) || empty($uid) || empty($pwd)) {
+    header("Location: ../signup.php?signup=empty");
+    exit();
+} else {
+    // ...
+}
+```
+If this passes, another check that can be performed is checking for valid characters in the inputs:
+```php
+//Check if input characters are valid
+if (!preg_match("/^[a-zA-Z]*$/", $first) || !preg_match("/^[a-zA-Z]*$/", $last)) {
+    header("Location: ../signup.php?signup=invalid");
+    exit();
+} else {
+    // ...
+}
+```
+[preg_match(http://php.net/manual/en/function.preg-match.php)] performs a regular expression match.  The regular expression used in this example checks that the $first and $last variables only contain upper and lowercase letters.
+
+Another error check could be checking if the email passed in is valid or not:
+```php
+// Check if email is valid
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    header("Location: ../signup.php?signup=email");
+    exit();
+} else { 
+    // ...
+}
+```
+Here, the [filter_var()](http://php.net/manual/en/function.filter-var.php) function is used to verify if an email is valid or not.
+
 
 
 
