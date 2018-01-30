@@ -172,6 +172,51 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 ```
 Here, the [filter_var()](http://php.net/manual/en/function.filter-var.php) function is used to verify if an email is valid or not.
 
+The final check before registering the user is to check if the username submitted already exist.  Doing this requires a query to be made:
+
+```php
+$sql = "SELECT * FROM users WHERE user_uid = $uid";
+$result = mysqli_query($mysqli, $sql);
+$resultCheck = mysqli_num_rows($result);
+```
+
+This query selects all users from the *users* table that matches the userid (```$uid```) created when the form was submitted.  The query is made using the ```mysqlil_query()``` function and set to the ```$result``` variable, which is then passed into the ```mysqli_num_rows()``` function that's set to the ```$resultCheck``` variable.  The mysqli_num_rows() function returns the number of rows from an SQL query.
+
+```php
+if ($resultCheck > 0) {
+    header("Location: ../signup.php?signup=usertaken");
+    exit();
+}
+```
+
+If ```$resultCheck``` is a number greater than 0, then the user exist and the user is taken back to the signup page.
+
+*There are several other checks that can be performed (and probably should be for production apps) like checking password length and character set, but for this example project these error handlers will be enough.*
+
+If all these checks are passed, the user can be created and entered in the the database:
+
+```php
+//Hashing the password
+$hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
+//Insert the user into the database
+$sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES ('$first', '$last', '$email', '$uid', '$hashedPwd');";
+mysqli_query($mysqli, $sql);
+header("Location: ../signup.php?signup=success");
+exit();
+```
+
+Databases should never store passwords, instead they should store hashes of passwords.  This not only makes it more difficult for malicious users who steal information, but also prevents administrators from learning passwords as well.
+
+As in the example above, the [password_hash()](http://php.net/manual/en/function.password-hash.php) function takes in the password (```$pwd```) submitted and, with the PASSWORD_DEFAULT argument, creates a new password hash using a hashing algorithm.
+
+The newly converted hashed password, along with the first name, last name, email and userid are inserted into the users table.
+
+Once the query is made, the page reloads.  The new user is registered and can now log in.
+
+
+
+
+
 
 
 
