@@ -28,6 +28,8 @@ The sections below document how the login system for this application was create
 [Connect to the Database](#connect-to-the-database)     
 [Signup Form](#signup-form)     
 [Signup Script](#signup-script)     
+[Login Script](#login-script)     
+[Logout Script](#logout-script)     
 
 ### Create a Database
 
@@ -212,6 +214,113 @@ As in the example above, the [password_hash()](http://php.net/manual/en/function
 The newly converted hashed password, along with the first name, last name, email and userid are inserted into the users table.
 
 Once the query is made, the page reloads.  The new user is registered and can now log in.
+
+
+### Login Script
+
+The PHP code that manipulates the login data can be found in the **login.config.php** file.  like the signup php file, the first thing to do is prevent users from navigating to the script through the URL by checking if the form was submitted:
+
+```php
+if (isset($_POST['submit'])) {
+    // ...
+}
+```
+
+If the login form was submitted, a connection to the database is made and the userid and password are set to variables:
+
+```php
+include('dbh.config.php');
+
+$uid = mysqli_real_escape_string($mysqli, $_POST['uid']);
+$pwd = mysqli_real_escape_string($mysqli, $_POST['pwd']);
+```
+
+Next, error handlers are performed starting with a check for empty fields:
+
+```php
+//Check if inputs are empty
+if (empty($uid) || empty($pwd)) {
+    header("Location: ../index.php?login=empty");
+    exit();
+}
+```
+
+The next check is to verify if a user exist in the database:
+
+```php
+$sql = "SELECT * FROM users WHERE user_uid = '$uid' OR user_email = '$uid'";
+$result = mysqli_query($mysqli, $sql);
+$resultCheck = mysqli_num_rows($result);
+if ($resultCheck < 1) {
+    header("Location: ../index.php?login=error");
+    exit();
+}
+```
+
+In this code snippet, the users table is queried to get a ```user_uid``` or ```user__email``` based on the entered user (```$uid```).  If ```$resultCheck``` is less than 1, then a user does not exist.  The user is taken back to the index.php page and the script is exited.
+
+If the script continues at this point, a user exist but the user password still needs to be verified.
+
+As noted in the login script section, the password saved in the database is a hashed password.  Verifying that the password entered matches the hash password requires the ```password_verify()``` function.  This function takes in the entered password and the hashed password as arguments:
+
+```php
+//De-hashing the password
+$hashedPwdCheck = password_verify($pwd, $row['user_pwd']);
+if ($hashedPwdCheck == false) {
+    header("Location: ../index.php?login=error");
+    exit();
+```
+
+The ```password_verify()``` function will return a true or false value depending on if it is verified or not.  If it isn't, the script is exited and the user is taken back to the index.php page with a login error.
+
+If password_verify() is true then the user is logged in and a session is started:
+
+```php
+//Log in the user here
+$_SESSION['u_id'] = $row['user_id'];
+$_SESSION['u_first'] = $row['user_first'];
+$_SESSION['u_last'] = $row['user_last'];
+$_SESSION['u_email'] = $row['user_email'];
+$_SESSION['u_uid'] = $row['user_uid'];
+header("Location: ../index.php?login=success");
+exit();
+```
+
+The [$_SESSION](http://php.net/manual/en/reserved.variables.session.php) variable is a superglobal that allows access to the variable from all pages within the website.
+
+In order for the $_SESSION variable to work within the website, it requires a session to be started.  This can be done using the ```session_start()``` function, which is placed at the top of the login script and at the top of the **header.php** file.
+
+*The ```session_start()``` function is placed in the header.php file because the header.php file is included in all pages of the website, thus giving access to the $_SESSION variables to all pages on the website as well.*
+
+To verify that the $_SESSION variables are working and that a session has successfully been started the following code can be placed into the index.php page:
+
+```php
+<?php
+    if (isset($_SESSION['u_id'])) {
+        echo "You are logged in!";
+    }
+?>
+```
+
+If the user id is seen on the page, then the $_SESSION variables are working and a session has been started.
+
+### Logout Script
+
+When clicking on the logout button inside the modal that pops out, the logout script is submitted:
+
+```php
+if (isset($_POST['submit'])) {
+    session_start(); // required to destory session
+    session_unset(); // unset session variables in the browser
+    session_destroy();
+    header("Location: ../index.php");
+    exit();
+}
+```
+
+As always, first there is a check to see if the form was submitted and not navigated to.  If it was submitted, ```session_unset()``` and ```session_destory()``` terminate the session, but in order to do so, ```session_start()`` needs to be included.
+
+After the session is desotryed the script is exited and the user is taken back to the index.php page.
 
 
 
