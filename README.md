@@ -1,5 +1,13 @@
 # PHP Note
 
+**Main Table of Contents**      
+[Introduction](#introduction)       
+[Resources](#resources)       
+[Login System](#login-system)       
+[Refactor to Use Prepared Statements](#refactor-to-use-prepared-statements)       
+
+## Introduction
+
 This will be a small application to get more practice using PHP.  What I want to build is something similar to [Google Keep](https://www.google.com/keep/), with the primary goal being to learn how to create a PHP log-in system and getting more practice making a CRUD application.
 
 This will be my 3rd PHP project this month (January 2018).  Hopefully I will continue building upon what I have learned from my previous experiences.
@@ -322,6 +330,51 @@ As always, first there is a check to see if the form was submitted and not navig
 
 After the session is desotryed the script is exited and the user is taken back to the index.php page.
 
+
+## Refactor to Use Prepared Statements
+
+The login system tutorial I used as a guide to creating the login system for this application doesn't use prepared statements.  Although the ```mysqli_real_escape_string``` function is used for all variables, the best practice with modern PHP is to use prepared statements.
+
+*Even while using the mysqli_real_escape_string() function, SQL Injection is still possible.  See this [stack overflow](https://stackoverflow.com/questions/5741187/sql-injection-that-gets-around-mysql-real-escape-string) page for a more detailed explanation.*
+
+Selecting a user from the users table looks like this using a prepared statement:
+
+```php
+$sql = "SELECT * FROM users WHERE user_uid = ?";
+
+// Prepared statements
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param('s', $uid);
+$stmt->execute();
+
+// Store result to get number of rows
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    header("Location: ../signup.php?signup=usertaken");
+    exit();
+}
+```
+
+The ```$uid``` variable is no longer set directly in the SQL.  Instead, it's replaced with a ? place holder then a ```$stmt``` is prepared, passing in the $sql variable.  The bind_param() function is used to bind the variable to the placeholder when it is executed.
+
+*bind_param() takes in at least two arguments.  The first argument is the data type of the variable, then, in order as they appear in the SQL query, the variables.*
+
+After the variables are bound, the $stmt is executed.  For this particular statement, the result is stored using ```get_result()```and set to the $result variable.  The ```$result``` variable is then checked for the number of rows using the ```num_rows``` property.  If the number of rows is greater than 0, the user already exist in the database and is taken back to the sign up page.
+
+Below is another example of using a prepared statement, this time with a longer SQL query:
+
+```php
+//Insert the user into the database
+$sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, 
+user_pwd) VALUES (?, ?, ?, ?, ?);";
+
+// Prepared statements
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param('sssss', $first, $last, $email, $uid, $hashedPwd);
+$stmt->execute();
+```
+It's the same process as the previous example that better demonstrates how bind_param() works.  Notice there are five placeholders, thus 5 ```sssss``` that represents each variable as a string.  Then each variable is passed into bind_param in the order they would be placed in the SQL query.
 
 
 

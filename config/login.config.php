@@ -11,21 +11,28 @@ if (isset($_POST['submit'])) {
     //Error Handlers
     //Check if inputs are empty
     if (empty($uid) || empty($pwd)) {
-        header("Location: ../index.php?login=empty");
+        header("Location: ../landing.php?login=empty");
         exit();
     } else {
-        $sql = "SELECT * FROM users WHERE user_uid = '$uid' OR user_email = '$uid'";
-        $result = mysqli_query($mysqli, $sql);
-        $resultCheck = mysqli_num_rows($result);
-        if ($resultCheck < 1) {
-            header("Location: ../index.php?login=error");
+        $sql = "SELECT * FROM users WHERE user_uid = ? OR user_email = ?";
+
+        // Prepared statements
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param('ss', $uid, $uid);
+        $stmt->execute();
+
+        // Store result to get number of rows
+        $result = $stmt->get_result();
+
+        if ($result < 1) {
+            header("Location: ../landing.php?login=error");
             exit();
         } else {
-            if ($row = mysqli_fetch_assoc($result)) {
+            if ($row = $result->fetch_assoc()) {
                 //De-hashing the password
                 $hashedPwdCheck = password_verify($pwd, $row['user_pwd']);
                 if ($hashedPwdCheck == false) {
-                    header("Location: ../index.php?login=error");
+                    header("Location: ../landing.php?login=error");
                     exit();
                 } elseif ($hashedPwdCheck == true) {
                     //Log in the user here
@@ -41,6 +48,6 @@ if (isset($_POST['submit'])) {
         }
     }
 } else {
-    header("Location: ../index.php?login=error");
+    header("Location: ../landing.php?login=error");
     exit();
 }
