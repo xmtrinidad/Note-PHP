@@ -1,6 +1,6 @@
 <?php include_once('inc/header.php'); ?>
 
-    <section class="container">
+    <main class="container">
         <h2 class="center-align">Signup</h2>
         <form class="signup-form" action="config/signup.config.php" method="POST">
             <div class="row">
@@ -31,6 +31,6 @@
                 </button>
             </div>
         </form>
-    </section>
+    </main>
     
 <?php include_once('inc/footer.php'); ?>

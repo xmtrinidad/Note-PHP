@@ -1,1 +1,2 @@
+// Materialize Modal
 $('.modal').modal();

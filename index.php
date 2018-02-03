@@ -1,12 +1,19 @@
-<?php include_once('inc/header.php'); ?>
+<?php
+    session_start();
+    if (!isset($_SESSION['u_id'])) {
+        header("Location: landing.php");
+        exit();
+    }
+?>
 
-    <section class="container">
-        <h2 class="center-align">Home</h2>
-        <?php
-            if (isset($_SESSION['u_id'])) {
-                echo "You are logged in!";
-            }
-        ?>
-    </section>
+<?php include_once('inc/header.php'); ?>
+        
+    <main class="main container">
+
+    <?php include('inc/forms/note-form.php'); ?>
+
+    </main>
+
+    
     
 <?php include_once('inc/footer.php'); ?>
