@@ -1,6 +1,9 @@
 <?php include_once('inc/header.php'); ?>
 
     <main class="container">
+        <?php if (isset($_GET['signup']) && $_GET['signup'] === 'usertaken'): ?>
+            <p class="signup-msg white-text red darken-1 center">Username taken.  Choose a different username.</p>
+        <?php endif; ?>
         <h2 class="center-align">Signup</h2>
         <form class="signup-form" action="config/signup.config.php" method="POST">
             <div class="row">
