@@ -10,7 +10,7 @@
                 id="note_title"
                 type="text" 
                 class="validate">
-            <label for="note_title">Title</label>
+            <label class="active" for="note_title">Title</label>
         </div>
         <div class="input-field note-form__text">
             <textarea

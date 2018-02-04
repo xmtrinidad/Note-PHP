@@ -8,7 +8,18 @@
 }
 .card {
     display: inline-block;
+    position: relative;
     width:  100%;
+}
+
+#modal1 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.card-modal {
+    padding-top: 15px;
 }
 
 /** Hide card action **/

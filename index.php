@@ -18,8 +18,6 @@
         while ($data = $result->fetch_assoc()) {
             $notes[] = $data;
         }
-
-        
     }
 ?>
 
@@ -27,22 +25,44 @@
         
     <main class="main container">
 
-    <?php include('inc/forms/note-form.php'); ?>
+        <!-- Add Note Form -->
 
-    <div class="notes row">
-        <?php foreach ($notes as $note): ?>
-            <div class="card blue-grey darken-1">
-                <div class="card-content white-text">
-                    <span class="card-title"><?php echo $note['note_title']; ?></span>
-                    <p><?php echo $note['note_text']; ?></p>
+        <?php include('inc/forms/note-form.php'); ?>
+        
+        <!-- /Add Note Form -->
+
+        <!-- Note Cards -->
+        <div class="notes row">
+            <?php foreach ($notes as $note): ?>
+                <div id="<?php echo $note['note_id']; ?>" class="card blue-grey darken-1">
+                    <a id="modal1" href="#card-modal" class="modal-trigger"></a>
+                    <div class="card-content white-text">
+                        <span class="card-title"><?php echo $note['note_title']; ?></span>
+                        <p class="card-text"><?php echo $note['note_text']; ?></p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#delete-modal" class="modal-trigger">Delete</a>
+                    </div>
                 </div>
-                <div class="card-action">
-                    <a href="#">Edit</a>
-                    <a href="#">Delete</a>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
+            <?php endforeach; ?>
+        </div>
+        <!-- /Note Cards -->
+
+        <!-- Edit Form Modal -->
+        <div id="card-modal" class="modal card-modal">
+
+            <?php include('inc/forms/edit-form.php'); ?>
+
+        </div>
+        <!-- /Edit Form Modal -->
+
+        <!-- Delete Form Modal -->
+        <div id="delete-modal" class="modal delete-modal">
+
+            <?php include('inc/forms/delete-form.php'); ?>
+
+        </div>
+        <!-- /Delete Form Modal -->
 
     </main>
 
