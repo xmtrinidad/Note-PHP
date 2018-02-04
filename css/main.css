@@ -1,10 +1,13 @@
 .main {
     margin: 30px auto;
+    max-width: 900px;
 }
 
 .signup-msg {
     padding: 15px;
     font-weight: bold;
 }
+
+
 
 

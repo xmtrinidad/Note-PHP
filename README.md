@@ -5,6 +5,7 @@
 [Resources](#resources)       
 [Login System](#login-system)       
 [Refactor to Use Prepared Statements](#refactor-to-use-prepared-statements)       
+[Mysqli Fetch](#mysqli-fetch)       
 
 ## Introduction
 
@@ -376,6 +377,51 @@ $stmt->execute();
 ```
 It's the same process as the previous example that better demonstrates how bind_param() works.  Notice there are five placeholders, thus 5 ```sssss``` that represents each variable as a string.  Then each variable is passed into bind_param in the order they would be placed in the SQL query.
 
+## Mysqli Fetch
+
+Fetching data from a prepared statement using mysqli is a bit more involved compared to using PDO.  I found the solution at this [Stack Overflow](https://stackoverflow.com/questions/11048622/how-to-fetch-all-in-assoc-array-from-a-prepared-statement) page
+
+Below is the prepared statement and the code that gets the query data:
+
+```php
+include('config/dbh.config.php');
+$user_id = $_SESSION['u_id'];
+
+$sql = "SELECT * FROM notes WHERE user_id = ?;";
+// Prepared statements
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param('i', $user_id);
+$stmt->execute();
+
+$result = $stmt->get_result();
+// Put result data into $notes array
+while ($data = $result->fetch_assoc()) {
+    $notes[] = $data;
+}
+```
+
+First a database connection is made then the $user_id is set to the $_SESSION u_id.  The user id is needed to get the users notes from the notes table.  The $user_id isn't passed directly into the SQL statement, but is instead prepared, bound and executed using prepared statements.
+
+As before, the ```get_result()``` function is used to get the results from the prepared statement.  Using a while loop, the result data is converted to an associative array and each $data row is added to the ```$notes[]``` array.
+
+Now that the needed data is in an array, it can be used within the HTML to create cards:
+
+```php
+<?php foreach ($notes as $note): ?>
+    <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+            <span class="card-title"><?php echo $note['note_title']; ?></span>
+            <p><?php echo $note['note_text']; ?></p>
+        </div>
+        <div class="card-action">
+            <a href="#">Edit</a>
+            <a href="#">Delete</a>
+        </div>
+    </div>
+<?php endforeach; ?>
+```
+
+Here, a foreach loop is used to create cards and iterate over the $notes array to extract **note_title** and **note__text** to place in the card html. 
 
 
 

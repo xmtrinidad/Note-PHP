@@ -16,6 +16,7 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="js/form.js"></script>
+    <script src="js/card.js"></script>
     <script src="js/index.js"></script>
 </body>
 </html>

@@ -1,3 +1,8 @@
+.note-form {
+    max-width: 550px;
+    margin: auto;
+}
+
 .note-form__title, .note-form__btns {
     display: none;
 }

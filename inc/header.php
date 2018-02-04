@@ -1,6 +1,3 @@
-<?php
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +9,7 @@
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/modals.css">
     <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/note.css">
     <link rel="stylesheet" href="css/main.css">
     <title>Note App</title>
 </head>
