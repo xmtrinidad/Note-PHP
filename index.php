@@ -14,6 +14,7 @@
         $stmt->execute();
         
         $result = $stmt->get_result();
+        $notes = [];
         // Put result data into $notes array
         while ($data = $result->fetch_assoc()) {
             $notes[] = $data;

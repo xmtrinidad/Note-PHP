@@ -2,9 +2,9 @@
 
     if (isset($_POST['submit'])) {
         include_once('dbh.config.php');
-        $title = mysqli_real_escape_string($mysqli, $_POST['title']);
-        $text = mysqli_real_escape_string($mysqli, $_POST['text']);
-        $user_id = mysqli_real_escape_string($mysqli, $_POST['user_id']);
+        $title = htmlspecialchars($_POST['title']);
+        $text = htmlspecialchars($_POST['text']);
+        $user_id = htmlspecialchars($_POST['user_id']);
 
         $sql = "INSERT INTO notes(note_title, note_text, user_id)
                 VALUES (?, ?, ?);";

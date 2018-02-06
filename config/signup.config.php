@@ -4,11 +4,11 @@ if (isset($_POST['submit'])) {
 
     include_once('dbh.config.php');
 
-    $first = mysqli_real_escape_string($mysqli, $_POST['first']);
-    $last = mysqli_real_escape_string($mysqli, $_POST['last']);
-    $email = mysqli_real_escape_string($mysqli, $_POST['email']);
-    $uid = mysqli_real_escape_string($mysqli, $_POST['uid']);
-    $pwd = mysqli_real_escape_string($mysqli, $_POST['pwd']);
+    $first = htmlspecialchars($_POST['first']);
+    $last = htmlspecialchars($_POST['last']);
+    $email = htmlspecialchars($_POST['email']);
+    $uid = htmlspecialchars($_POST['uid']);
+    $pwd = htmlspecialchars($_POST['pwd']);
 
     //Error handlers
     //Check for empty fields
@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
 
                 // Store result to get number of rows
                 $result = $stmt->get_result();
-                
+
                 if ($result->num_rows > 0) {
                     header("Location: ../signup.php?signup=usertaken");
                     exit();
@@ -46,7 +46,7 @@ if (isset($_POST['submit'])) {
                     //Insert the user into the database
                     $sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, 
                     user_pwd) VALUES (?, ?, ?, ?, ?);";
-                    
+
                     // Prepared statements
                     $stmt = $mysqli->prepare($sql);
                     $stmt->bind_param('sssss', $first, $last, $email, $uid, $hashedPwd);

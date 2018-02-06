@@ -5,8 +5,8 @@ session_start();
 if (isset($_POST['submit'])) {
     include('dbh.config.php');
 
-    $uid = mysqli_real_escape_string($mysqli, $_POST['uid']);
-    $pwd = mysqli_real_escape_string($mysqli, $_POST['pwd']);
+    $uid = htmlspecialchars($_POST['uid']);
+    $pwd = htmlspecialchars($_POST['pwd']);
 
     //Error Handlers
     //Check if inputs are empty
@@ -23,8 +23,7 @@ if (isset($_POST['submit'])) {
 
         // Store result to get number of rows
         $result = $stmt->get_result();
-
-        if ($result < 1) {
+        if ($result->num_rows < 1) {
             header("Location: ../landing.php?login=error");
             exit();
         } else {

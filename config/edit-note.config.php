@@ -3,10 +3,10 @@
 if (isset($_POST['submit_edit'])) {
     session_start();
 
-    $title = $_POST['edit_title'];
-    $text = $_POST['edit_text'];
-    $note_id = $_POST['note_id'];
-    $user_id = $_SESSION['u_id'];
+    $title = htmlspecialchars($_POST['edit_title']);
+    $text = htmlspecialchars($_POST['edit_text']);
+    $note_id = htmlspecialchars($_POST['note_id']);
+    $user_id = htmlspecialchars($_SESSION['u_id']);
 
     if (empty($text)) {
         header("Location: ../index.php");
@@ -26,6 +26,7 @@ if (isset($_POST['submit_edit'])) {
         $stmt->bind_param('ssii', $title, $text, $user_id, $note_id);
         $stmt->execute();
         header("Location: ../index.php");
+        exit();
     }
 } else {
     header("Location: ../index.php");
