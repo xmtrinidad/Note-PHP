@@ -1,15 +1,4 @@
-<?php
-    $msg = '';
-    $msgColor = 'red';
-    if (isset($_GET['signup']) && $_GET['signup'] === 'success') {
-        $msg = 'Sign-up successful!  Login with your credentials to get started.';
-        $msgColor = 'green';
-    } else if (isset($_GET['login']) && $_GET['login'] === 'empty') {
-        $msg = 'Login unsuccessful.  Empty fields.';
-    } else if (isset($_GET['login']) && $_GET['login'] === 'error') {
-        $msg = 'Invalid Credentials.  Please try again.';
-    }
-?>
+
 
 <?php include_once('inc/header.php'); ?>
 
@@ -21,9 +10,9 @@
         <a href="#login-modal" class="modal-trigger btn"><i class="medium material-icons left">account_circle</i>Get Started</a>
     </div>
     <!-- Error Message -->
-    <?php if ($msg != ''): ?>
-        <div class="error-msg <?php echo $msgColor; ?> white-text">
-            <p><?php echo $msg; ?></p>
+    <?php if (loginMsg()): ?>
+        <div class="error-msg <?php echo loginMsg()[1]; ?> white-text">
+            <p><?= loginMsg()[0]; ?></p>
         </div>
     <?php endif; ?>
     <!-- /Error Message -->

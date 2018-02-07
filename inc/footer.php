@@ -1,5 +1,5 @@
         
-        <footer class="page-footer">
+        <footer class="page-footer indigo">
           <div class="footer-copyright">
             <div class="container">
             © 2018 Xavier Trinidad

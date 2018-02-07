@@ -1,3 +1,5 @@
+<?php  include 'functions.php'?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +22,7 @@
 <body>
     <header>
         <nav>
-            <div class="nav-wrapper">
+            <div class="nav-wrapper indigo">
                 <a href="index.php" class="brand-logo left">PHP Note</a>
                 <ul id="nav-mobile" class="right">
                 <?php if (isset($_SESSION['u_id'])): ?>

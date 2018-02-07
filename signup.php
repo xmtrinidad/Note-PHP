@@ -1,22 +1,11 @@
-<?php
-    $msg = '';
-    if (isset($_GET['signup']) && $_GET['signup'] === 'usertaken') {
-        $msg = 'Username taken.  Choose a different username.';
-    } else if (isset($_GET['signup']) && $_GET['signup'] === 'empty') {
-        $msg = 'Please fill in all fields.';
-    } else if (isset($_GET['signup']) && $_GET['signup'] === 'email') {
-        $msg = 'Invalid email';
-    }
-?>
-
 <?php include_once('inc/header.php'); ?>
 
     <main class="container">
 
         <h2 class="center-align">Signup</h2>
-        <?php if ($msg != ''): ?>
+        <?php if (signUpMsg()): ?>
             <div class="error-msg red white-text">
-                <p><?= $msg; ?></p>
+                <p><?= signUpMsg(); ?></p>
             </div>
         <?php endif; ?>
         <form class="signup-form" action="config/signup.config.php" method="POST">
@@ -49,5 +38,5 @@
             </div>
         </form>
     </main>
-    
+
 <?php include_once('inc/footer.php'); ?>
