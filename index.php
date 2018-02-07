@@ -20,17 +20,26 @@
             $notes[] = $data;
         }
     }
+
 ?>
 
 <?php include_once('inc/header.php'); ?>
         
-    <main class="main container">
+    <main class="main">
 
         <!-- Add Note Form -->
 
         <?php include('inc/forms/note-form.php'); ?>
         
         <!-- /Add Note Form -->
+
+        <!-- Error Message -->
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'empty'): ?>
+            <div class="error-msg red white-text">
+                <p>Card not edited.  Empty text field.</p>
+            </div>
+        <?php endif; ?>
+        <!-- /Error Message -->
 
         <!-- Note Cards -->
         <div class="notes row">

@@ -1,10 +1,24 @@
+<?php
+    $msg = '';
+    if (isset($_GET['signup']) && $_GET['signup'] === 'usertaken') {
+        $msg = 'Username taken.  Choose a different username.';
+    } else if (isset($_GET['signup']) && $_GET['signup'] === 'empty') {
+        $msg = 'Please fill in all fields.';
+    } else if (isset($_GET['signup']) && $_GET['signup'] === 'email') {
+        $msg = 'Invalid email';
+    }
+?>
+
 <?php include_once('inc/header.php'); ?>
 
     <main class="container">
-        <?php if (isset($_GET['signup']) && $_GET['signup'] === 'usertaken'): ?>
-            <p class="signup-msg white-text red darken-1 center">Username taken.  Choose a different username.</p>
-        <?php endif; ?>
+
         <h2 class="center-align">Signup</h2>
+        <?php if ($msg != ''): ?>
+            <div class="error-msg red white-text">
+                <p><?= $msg; ?></p>
+            </div>
+        <?php endif; ?>
         <form class="signup-form" action="config/signup.config.php" method="POST">
             <div class="row">
                 <div class="input-field col m6 s12">

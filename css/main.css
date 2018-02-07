@@ -1,6 +1,23 @@
 .main {
     margin: 30px auto;
-    max-width: 900px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.landing {
+    max-width: 830px;
+}
+
+.landing .btn {
+    margin-bottom: 30px;
+}
+
+.error-msg {
+    width: 300px;
+    margin: 0 auto 8px auto;
+    padding: 4px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .signup-msg {

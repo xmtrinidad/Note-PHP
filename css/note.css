@@ -3,9 +3,12 @@
  https://stackoverflow.com/questions/44885831/materialize-css-stacking-cards-responsively
 **/
 .notes {
-    column-width: 19.5rem;
+    column-width: 23rem;
     column-gap: 1rem;
+    padding: 0 15px;
 }
+
+
 .card {
     display: inline-block;
     position: relative;

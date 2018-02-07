@@ -9,7 +9,7 @@ if (isset($_POST['submit_edit'])) {
     $user_id = htmlspecialchars($_SESSION['u_id']);
 
     if (empty($text)) {
-        header("Location: ../index.php");
+        header("Location: ../index.php?error=empty");
         exit();
     } else {
         include_once('dbh.config.php');

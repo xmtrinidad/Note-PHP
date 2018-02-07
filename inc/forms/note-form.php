@@ -1,7 +1,7 @@
 <form 
     method="POST"
     action="config/note.config.php" 
-    class="form note-form">
+    class="form note-form container">
     <div class="row">
         <div class="input-field note-form__title">
             <input
