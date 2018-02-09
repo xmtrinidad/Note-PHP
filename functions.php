@@ -1,5 +1,6 @@
 <?php
 
+
 function signUpMsg() {
     if (isset($_GET['signup'])) {
         $msg = $_GET['signup'];
