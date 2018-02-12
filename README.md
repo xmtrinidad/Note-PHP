@@ -1,5 +1,13 @@
 # PHP Note
 
+## Update 2/9
+
+I have deployed the demo app using DigitalOcean.  This is my first application deploying live where I had to use a service, along with the LAMP stack.  I will update this readme on the process of deploying this application within the next few days
+
+<!-- Link to site: <http://www.xmtphp-note.bid/> -->
+**2/12**        
+**Site temporarily down as I work on a readme tutorial for deploying a PHP site on DigitalOcean**
+
 
 **Main Table of Contents**      
 [Introduction](#introduction)       
@@ -8,11 +16,8 @@
 [Refactor to Use Prepared Statements](#refactor-to-use-prepared-statements)       
 [Mysqli Fetch](#mysqli-fetch)   
 
-## Update 2/9
 
-I have deployed the demo app using DigitalOcean.  This is my first application deploying live where I had to use a service, along with the LAMP stack.  I will update this readme on the process of deploying this application within the next few days
 
-Link to site: <http://www.xmtphp-note.bid/>
 
 ## Introduction
 
