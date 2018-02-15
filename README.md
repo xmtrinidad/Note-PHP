@@ -4,9 +4,13 @@
 
 I have deployed the demo app using DigitalOcean.  This is my first application deploying live where I had to use a service, along with the LAMP stack.  I will update this readme on the process of deploying this application within the next few days
 
-<!-- Link to site: <http://www.xmtphp-note.bid/> -->
-**2/12**        
-**Site temporarily down as I work on a readme tutorial for deploying a PHP site on DigitalOcean**
+Link to site: <http://www.xmtphp-note.bid/>
+
+## Update 2/15
+
+For a guide on how I deployed this application using DigitalOcean, checkout the repo I made: <https://github.com/xmtrinidad/DigitalOcean-Walkthrough>
+
+---
 
 
 **Main Table of Contents**      
