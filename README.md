@@ -4,7 +4,7 @@
 
 I have deployed the demo app using DigitalOcean.  This is my first application deploying live where I had to use a service, along with the LAMP stack.  I will update this readme on the process of deploying this application within the next few days
 
-Link to site: <http://www.xmtphp-note.bid/>
+Link to site: <https://www.xmtphp-note.bid>
 
 ## Update 2/15
 
