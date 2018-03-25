@@ -1,10 +1,15 @@
 # PHP Note
 
+## Update 3/24
+
+This practice project is no longer active, but I will keep the repo active for future reference.
+
 ## Update 2/9
 
 I have deployed the demo app using DigitalOcean.  This is my first application deploying live where I had to use a service, along with the LAMP stack.  I will update this readme on the process of deploying this application within the next few days
 
-Link to site: <https://www.xmtphp-note.bid>
+<!-- Link to site: <https://www.xmtphp-note.bid> -->
+
 
 ## Update 2/15
 
